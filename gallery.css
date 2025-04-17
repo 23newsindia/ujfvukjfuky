@@ -1,0 +1,850 @@
+
+
+/* Position your custom badge */
+.top-badge {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    background: #ff0000;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+
+/* Hide ALL sale badges */
+.nasa-badges-wrap .sale-label,
+.nasa-badges-wrap .deal-label,
+.woocommerce span.onsale {
+    display: none !important;
+}
+
+/* ==============================================
+   NASA Product Gallery - Optimized CSS Part 1
+   Base Structure & Gallery Layout
+   Scope: .nasa-single-product-scroll
+============================================== */
+
+/* Reset and Variables */
+.nasa-single-product-scroll {
+  --nasa-gallery-spacing: 10px;
+  --nasa-badge-color: #000000;
+  --nasa-icon-size: 32px;
+  --nasa-thumb-opacity: 0.3;
+  --nasa-thumb-active-opacity: 1;
+  --nasa-zoom-bg: #fafafa;
+  --nasa-arrow-size: 40px;
+  --nasa-image-ratio: 1/1.475;
+  --nasa-lightbox-z-index: 999999;
+  --nasa-lightbox-bg: rgba(0, 0, 0, 0.92);
+  --nasa-arrow-bg: rgba(255, 255, 255, 0.9);
+}
+
+/* Scoped reset to prevent conflicts */
+.nasa-single-product-scroll * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Gallery Container */
+.nasa-single-product-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nasa-gallery-spacing);
+  position: relative;
+  isolation: isolate; /* Prevent z-index conflicts */
+}
+
+/* Product Gallery Layout */
+.nasa-single-product-scroll .product-gallery {
+  display: flex;
+  flex-direction: row;
+  gap: var(--nasa-gallery-spacing);
+  position: relative;
+}
+
+/* Main Image Area */
+.nasa-single-product-scroll .nasa-main-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.nasa-single-product-scroll .product-images-slider {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Image Grid */
+.nasa-single-product-scroll .nasa-main-image-default-wrap {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--nasa-gallery-spacing);
+  overflow: hidden;
+  will-change: transform;
+}
+
+.nasa-single-product-scroll .main-images {
+  display: contents;
+}
+
+/* Image Container */
+.nasa-single-product-scroll .item-wrap {
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--nasa-image-ratio);
+  background: var(--nasa-zoom-bg);
+  contain: layout paint style; /* Performance optimization */
+  perspective: 1000px;
+}
+
+.nasa-single-product-scroll .vanilla-zoom {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  transform-style: preserve-3d;
+}
+
+.nasa-single-product-scroll .vanilla-zoom img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
+  aspect-ratio: var(--nasa-image-ratio);
+  content-visibility: auto;
+  contain: layout paint;
+  transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Thumbnail Wrapper */
+.nasa-single-product-scroll .nasa-thumb-wrap {
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--nasa-gallery-spacing);
+  position: sticky;
+  top: calc(var(--nasa-gallery-spacing) * 4);
+  height: min(80vh, 800px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.2) transparent;
+}
+
+/* Custom scrollbar for thumbnails */
+.nasa-single-product-scroll .nasa-thumb-wrap::-webkit-scrollbar {
+  width: 4px;
+}
+.nasa-single-product-scroll .nasa-thumb-wrap::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 2px;
+}
+
+.nasa-single-product-scroll .nasa-thumbnail-default-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px; /* Prevent scrollbar overlap */
+}
+
+/* ==============================================
+   NASA Product Gallery - Optimized CSS Part 2
+   Thumbnails, Badges & Wishlist
+   Scope: .nasa-single-product-scroll
+============================================== */
+
+/* Thumbnail Items */
+.nasa-single-product-scroll .nasa-wrap-item-thumb {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: var(--nasa-thumb-opacity);
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  background-color: #f8f8f8;
+}
+
+.nasa-single-product-scroll .nasa-wrap-item-thumb.nasa-active,
+.nasa-single-product-scroll .nasa-wrap-item-thumb:hover,
+.nasa-single-product-scroll .nasa-wrap-item-thumb:focus-visible {
+  opacity: var(--nasa-thumb-active-opacity);
+  border-color: color-mix(in srgb, var(--nasa-badge-color) 20%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.nasa-single-product-scroll .nasa-wrap-item-thumb img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--nasa-image-ratio);
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.nasa-single-product-scroll .nasa-wrap-item-thumb:hover img {
+  transform: scale(1.02);
+}
+
+/* Badges */
+.nasa-single-product-scroll .nasa-badges-wrap {
+  position: absolute;
+  top: var(--nasa-gallery-spacing);
+  right: 30px;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.nasa-single-product-scroll .badge {
+  background: var(--nasa-badge-color);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 50px;
+  font: 600 0.8em/1.5 sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  pointer-events: auto;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nasa-single-product-scroll .badge.sale-label {
+  background: var(--nasa-badge-color);
+}
+
+.nasa-single-product-scroll .badge.deal-label {
+  display: none !important;
+}
+
+/* Wishlist Button */
+.nasa-single-product-scroll .product-gallery .btn-wishlist {
+  background-color: #fff;
+  position: relative;
+  margin-top: 10px;
+  width: var(--nasa-icon-size);
+  height: var(--nasa-icon-size);
+  opacity: 1;
+  color: var(--nasa-badge-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist .nasa-icon {
+  width: var(--nasa-icon-size);
+  height: var(--nasa-icon-size);
+  line-height: var(--nasa-icon-size);
+  color: var(--nasa-badge-color);
+  text-align: center;
+  transition: inherit;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist .nasa-icon:before {
+  line-height: inherit;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist svg.nasa-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist:hover,
+.nasa-single-product-scroll .product-gallery .btn-wishlist:focus {
+  opacity: 1;
+  color: var(--nasa-badge-color);
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  transform: scale(1.1);
+}
+
+.nasa-single-product-scroll .product-gallery .product-image-btn {
+  position: absolute;
+  height: 1px;
+  width: auto;
+  top: 0;
+  left: 20px;
+  z-index: 99;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist svg {
+  height: 36px;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist svg.ns-filled {
+  position: relative;
+  left: unset;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist.active svg.ns-stroke {
+  opacity: 0;
+}
+
+.nasa-single-product-scroll .product-gallery .btn-wishlist.active svg.ns-filled {
+  opacity: 1;
+}
+
+/* ==============================================
+   NASA Product Gallery - Optimized CSS Part 3
+   Navigation, Zoom & Mobile Responsiveness
+   Scope: .nasa-single-product-scroll
+============================================== */
+
+/* Navigation Arrows */
+.nasa-single-product-scroll .nasa-single-slider-arrows {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  pointer-events: none;
+}
+
+.nasa-single-product-scroll .nasa-single-arrow {
+  pointer-events: auto;
+  cursor: pointer;
+  background: var(--nasa-arrow-bg);
+  border-radius: 50%;
+  width: var(--nasa-arrow-size);
+  height: var(--nasa-arrow-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+  border: none;
+  color: var(--nasa-badge-color);
+}
+
+.nasa-single-product-scroll .nasa-single-arrow:hover {
+  background: #fff;
+  transform: scale(1.08);
+}
+
+.nasa-single-product-scroll .nasa-single-arrow.nasa-disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.nasa-single-product-scroll .nasa-single-arrow svg {
+  width: 60%;
+  height: 60%;
+  fill: currentColor;
+}
+
+/* Zoom Functionality */
+.nasa-single-product-scroll .vanilla-zoom-flyout {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+  margin-left: 10px;
+  background: var(--nasa-zoom-bg);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.nasa-single-product-scroll .vanilla-zoom:hover .vanilla-zoom-flyout {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.nasa-single-product-scroll .vanilla-zoom:hover img {
+  transform: scale(1.05);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none' stroke='%23000' stroke-width='2'%3E%3Ccircle cx='14' cy='14' r='12'/%3E%3Cpath d='M23 23l7 7'/%3E%3C/svg%3E") 16 16, zoom-in;
+}
+
+/* Subtle Glow Effect */
+.nasa-single-product-scroll .vanilla-zoom::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, 
+              rgba(255,255,255,0.2) 0%, 
+              transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.nasa-single-product-scroll .vanilla-zoom:hover::after {
+  opacity: 1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 767px) {
+  .nasa-single-product-scroll .product-gallery {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .nasa-single-product-scroll .nasa-thumb-wrap,
+  .nasa-single-product-scroll .vanilla-zoom-flyout {
+    display: none !important;
+  }
+
+  .nasa-single-product-scroll .nasa-main-wrap {
+    width: 100%;
+  }
+
+  .nasa-single-product-scroll .nasa-badges-wrap {
+    right: 15px;
+    top: 15px;
+  }
+
+  .nasa-single-product-scroll .badge {
+    font-size: 0.7em;
+    padding: 2px 8px;
+  }
+
+  .nasa-single-product-scroll .nasa-single-slider-arrows {
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+    width: 100%;
+    display: flex !important;
+  }
+
+  .nasa-single-product-scroll .nasa-single-arrow {
+    --nasa-arrow-size: 36px;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95);
+    margin: 0 8px;
+  }
+
+  .nasa-single-product-scroll .nasa-single-arrow[data-action="prev"] {
+    left: 0;
+  }
+
+  .nasa-single-product-scroll .nasa-single-arrow[data-action="next"] {
+    right: 0;
+  }
+
+  .nasa-single-product-scroll .item-wrap {
+    touch-action: pan-y;
+    scroll-snap-align: start;
+    min-width: 100% !important;
+    flex: 0 0 100% !important;
+    transform: none !important;
+    opacity: 1 !important;
+    display: block !important;
+  }
+
+  .nasa-single-product-scroll .nasa-main-image-default-wrap {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    grid-template-columns: unset !important;
+    gap: 0 !important;
+  }
+
+  .nasa-single-product-scroll .main-images {
+    display: flex !important;
+    width: 100%;
+  }
+
+  .nasa-single-product-scroll .ns-img-count {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    z-index: 10;
+  }
+
+  /* Disable hover effects on mobile */
+  .nasa-single-product-scroll .vanilla-zoom:hover img {
+    transform: none;
+  }
+  
+  .nasa-single-product-scroll .vanilla-zoom::after {
+    display: none;
+  }
+
+  /* Hide all items except active one initially */
+  .nasa-single-product-scroll .item-wrap:not(.active) {
+    display: none;
+  }
+}
+
+/* ==============================================
+   NASA Product Gallery - Optimized CSS Part 4
+   Accessibility, Print Styles & Final Optimizations
+   Scope: .nasa-single-product-scroll
+============================================== */
+
+/* Accessibility Focus States */
+.nasa-single-product-scroll .nasa-single-arrow:focus-visible,
+.nasa-single-product-scroll .btn-wishlist:focus-visible,
+.nasa-single-product-scroll .nasa-wrap-item-thumb:focus-visible {
+  outline: 2px solid var(--nasa-badge-color);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
+}
+
+/* Screen Reader Text */
+.nasa-single-product-scroll .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .nasa-single-product-scroll * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .nasa-single-product-scroll .vanilla-zoom img,
+  .nasa-single-product-scroll .nasa-wrap-item-thumb img {
+    transition: none !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .nasa-single-product-scroll {
+    display: block !important;
+    break-inside: avoid;
+  }
+
+  .nasa-single-product-scroll .nasa-thumb-wrap,
+  .nasa-single-product-scroll .nasa-single-arrow,
+  .nasa-single-product-scroll .btn-wishlist,
+  .nasa-single-product-scroll .nasa-badges-wrap,
+  .nasa-single-product-scroll .product-image-btn {
+    display: none !important;
+  }
+
+  .nasa-single-product-scroll .product-gallery {
+    flex-direction: column !important;
+  }
+
+  .nasa-single-product-scroll .item-wrap {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  .nasa-single-product-scroll .vanilla-zoom img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    border: 1px solid #ddd !important;
+  }
+
+  .nasa-single-product-scroll .nasa-main-image-default-wrap {
+    display: block !important;
+  }
+}
+
+/* Performance Optimizations */
+.nasa-single-product-scroll .nasa-main-image-default-wrap img,
+.nasa-single-product-scroll .nasa-wrap-item-thumb img {
+  content-visibility: auto;
+  contain: layout paint;
+}
+
+/* Prevent CLS (Cumulative Layout Shift) */
+.nasa-single-product-scroll .item-wrap {
+  aspect-ratio: var(--nasa-image-ratio);
+}
+
+/* Image Loading States */
+.nasa-single-product-scroll .nasa-wrap-item-thumb img[loading="lazy"] {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nasa-single-product-scroll .nasa-wrap-item-thumb img[loading="lazy"] {
+    animation: nasa-loadingShimmer 1.5s infinite;
+  }
+}
+
+@keyframes nasa-loadingShimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Lightbox Overrides for Gallery */
+.nasa-single-product-scroll .modern-lightbox {
+  --nasa-lightbox-z-index: 999999;
+  --nasa-lightbox-bg: rgba(0, 0, 0, 0.92);
+}
+
+/* Fallbacks for Older Browsers */
+@supports not (aspect-ratio: 1/1) {
+  .nasa-single-product-scroll .item-wrap {
+    height: 0;
+    padding-bottom: calc(100% / var(--nasa-image-ratio));
+    position: relative;
+  }
+  
+  .nasa-single-product-scroll .item-wrap img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (pointer: coarse) {
+  .nasa-single-product-scroll .nasa-main-image-default-wrap {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nasa-single-product-scroll .item-wrap {
+    scroll-snap-align: start;
+    flex: 0 0 100%;
+  }
+
+  .nasa-single-product-scroll .vanilla-zoom img {
+    cursor: grab;
+  }
+
+  .nasa-single-product-scroll .vanilla-zoom img:active {
+    cursor: grabbing;
+  }
+  
+  .nasa-single-product-scroll .vanilla-zoom:active img {
+    transform: scale(0.98);
+  }
+}
+
+/* ==============================================
+   NASA Product Gallery - Optimized CSS Part 5
+   Enhanced Zoom Effects & Final Touches
+   Scope: .nasa-single-product-scroll
+============================================== */
+
+/* Enhanced Image Zoom Effect */
+.nasa-single-product-scroll .vanilla-zoom:hover img {
+  transform: scale(1.05) translateZ(10px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+/* Zoom Direction Controls */
+.nasa-single-product-scroll .vanilla-zoom[data-zoom-direction="top"] img {
+  transform-origin: center top;
+}
+
+.nasa-single-product-scroll .vanilla-zoom[data-zoom-direction="center"] img {
+  transform-origin: center center;
+}
+
+.nasa-single-product-scroll .vanilla-zoom[data-zoom-direction="left"] img {
+  transform-origin: left center;
+}
+
+.nasa-single-product-scroll .vanilla-zoom[data-zoom-direction="right"] img {
+  transform-origin: right center;
+}
+
+.nasa-single-product-scroll .vanilla-zoom[data-zoom-direction="bottom"] img {
+  transform-origin: center bottom;
+}
+
+/* Video Thumbnail Styling */
+.nasa-single-product-scroll .nasa-item-main-video-wrap {
+  position: relative;
+}
+
+.nasa-single-product-scroll .nasa-item-main-video-wrap .ns-video-size {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.nasa-single-product-scroll .nasa-item-main-video-wrap::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.nasa-single-product-scroll .nasa-item-main-video-wrap::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-40%, -50%);
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 20px solid var(--nasa-badge-color);
+  z-index: 3;
+  transition: all 0.3s ease;
+}
+
+.nasa-single-product-scroll .nasa-item-main-video-wrap:hover::before {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.nasa-single-product-scroll .nasa-item-main-video-wrap:hover::after {
+  transform: translate(-40%, -50%) scale(1.1);
+}
+
+/* Image Counter Styling */
+.nasa-single-product-scroll .ns-img-count {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+/* Lightbox Transition Fixes */
+.nasa-single-product-scroll .modern-lightbox img {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.3s ease !important;
+}
+
+/* RTL Support */
+[dir="rtl"] .nasa-single-product-scroll .nasa-badges-wrap {
+  right: auto;
+  left: 30px;
+}
+
+[dir="rtl"] .nasa-single-product-scroll .product-image-btn {
+  left: auto;
+  right: 20px;
+}
+
+[dir="rtl"] .nasa-single-product-scroll .vanilla-zoom-flyout {
+  left: auto;
+  right: 100%;
+  margin-left: 0;
+  margin-right: 10px;
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .nasa-single-product-scroll .vanilla-zoom img {
+    border: 0.5px solid rgba(0,0,0,0.05);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .nasa-single-product-scroll {
+    --nasa-zoom-bg: #222;
+  }
+  
+  .nasa-single-product-scroll .nasa-wrap-item-thumb {
+    background-color: #333;
+  }
+  
+  .nasa-single-product-scroll .nasa-wrap-item-thumb img[loading="lazy"] {
+    background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%);
+  }
+}
+
+/* Final Performance Tweaks */
+.nasa-single-product-scroll .vanilla-zoom {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.nasa-single-product-scroll .item-wrap {
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  
+  /* Smooth transitions for all animatable properties */
+  transition: 
+    transform 0.3s ease-out,
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  
+  /* Initial state */
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+/* For inactive slides */
+.nasa-single-product-scroll .item-wrap.inactive {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Touch device optimizations */
+@media (pointer: coarse) {
+  .nasa-single-product-scroll .item-wrap {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+  }
+}
+
+
+/* Loading State (removed visibility:hidden) */
+.nasa-single-product-scroll .nasa-main-image-default-wrap {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.nasa-single-product-scroll .nasa-main-image-default-wrap.initializing {
+  opacity: 0.5;
+}
